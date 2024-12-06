@@ -4,8 +4,8 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: rgba(10, 1, 1, 0.87);
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -26,13 +26,19 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  text-align: center;
+}
+
+li {
+  list-style-type: none;
 }
 
 button {
@@ -65,4 +71,105 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.todo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input {
+  color: #1a1a1a;
+  background-color: #ffffff;
+  border-radius: 10px;
+  height: 30px;
+  padding: 5px 10px 5px 10px;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0;
+}
+
+.item-container {
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  border-width: 2px;
+  border-color: gray;
+  border-style: solid;
+  padding: 10px 15px;
+  justify-content: space-between;
+  min-width: 400px;
+  min-height: 45px;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+}
+
+.button-container {
+  display: flex;
+  gap: 5px;
+  margin-left: 10px;
+}
+
+.btn-edit {
+  padding: 0 10px;
+  background-color: #ffffff;
+  border-color: #3498db;
+  color: black;
+}
+
+.btn-delete {
+  padding: 5px 10px;
+  background-color: #ffffff;
+  border-color: #e74c3c;
+  color: black;
+}
+
+.btn-edit:hover {
+  border-color: #3498db;
+}
+
+.btn-delete:hover {
+  border-color: #e74c3c;
+}
+
+.todo-input {
+  width: 100%;
+}
+
+.change-container {
+  width: 100%;
+  display: flex;
+  background-color: #ffffff;
+  color: black;
+  gap: 5px;
+}
+
+.btn-save {
+  padding: 0 10px;
+  background-color: #ffffff;
+  border-color: #3498db;
+  color: black;
+}
+
+.btn-close {
+  padding: 5px 10px;
+  background-color: #ffffff;
+  border-color: #e74c3c;
+  color: black;
+}
+
+.btn-save:hover {
+  border-color: #3498db;
+}
+
+.btn-close:hover {
+  border-color: #e74c3c;
 }
