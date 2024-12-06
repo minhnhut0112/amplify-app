@@ -173,3 +173,7 @@ label {
 .btn-close:hover {
   border-color: #e74c3c;
 }
+
+.new-todo-input {
+  min-width: 400px;
+}

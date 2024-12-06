@@ -5,7 +5,10 @@ import { generateClient } from "aws-amplify/data";
 const client = generateClient<Schema>();
 
 function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
+  const [todos, setTodos] = useState<Schema["Todo"]["type"][]>([]);
+  const [todoIsEdit, setTodoIsEdit] = useState<string | null>();
+  const [todoCentent, setTodoContent] = useState<string>("");
+  const [newTodoCentent, setNewTodoContent] = useState<string>("");
 
   useEffect(() => {
     client.models.Todo.observeQuery().subscribe({
@@ -13,16 +16,19 @@ function App() {
     });
   }, []);
 
-  function createTodo() {
-    client.models.Todo.create({ content: newTodoCentent });
-  }
+  const fetchTodos = async () => {
+    const { data: items } = await client.models.Todo.list();
+    setTodos(items);
+  };
 
-  const [isEdit, setIsEdit] = useState<number | null>();
-  const [todoCentent, setTodoContent] = useState<string>("");
-  const [newTodoCentent, setNewTodoContent] = useState<string>("");
+  async function createTodo() {
+    await client.models.Todo.create({ content: newTodoCentent });
+  }
 
   const updateTodo = async (id: string, content: string) => {
     await client.models.Todo.update({ id, content });
+    await fetchTodos();
+    setTodoIsEdit(null);
   };
 
   const deleteTodo = async (id: string) => {
@@ -36,18 +42,22 @@ function App() {
         {todos.map((todo) => (
           <li key={todo.id}>
             <div className="item-container">
-              {isEdit !== Number(todo.id) ? (
+              {todoIsEdit !== todo.id ? (
                 <>
-                  <label htmlFor={String(todo.id)}>{todo.content}</label>
+                  <label htmlFor={String(todo.id)}>
+                    {todoCentent && todoIsEdit === todo.id
+                      ? todoCentent
+                      : todo.content}
+                  </label>
                   <div className="button-container">
                     <button
                       className="btn-edit"
                       onClick={() => {
-                        setIsEdit(Number(todo.id));
+                        setTodoIsEdit(todo.id);
                         setTodoContent(String(todo.content));
                       }}
                     >
-                      edit
+                      Edit
                     </button>
                     <button
                       onClick={() => deleteTodo(todo.id)}
@@ -66,6 +76,7 @@ function App() {
                   }}
                 >
                   <input
+                    autoFocus
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setTodoContent(e.target.value)
                     }
@@ -74,15 +85,18 @@ function App() {
                     value={todoCentent}
                   />
                   <button
+                    type="button"
                     onClick={() => {
-                      setIsEdit(null);
+                      setTodoIsEdit(null);
                       setTodoContent("");
                     }}
                     className="btn-close"
                   >
                     Close
                   </button>
-                  <button className="btn-save">Save</button>
+                  <button type="submit" className="btn-save">
+                    Save
+                  </button>
                 </form>
               )}
             </div>
@@ -94,6 +108,8 @@ function App() {
 
       <form className="todo-form">
         <input
+          className="new-todo-input"
+          autoFocus
           value={newTodoCentent}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setNewTodoContent(e.target.value)
